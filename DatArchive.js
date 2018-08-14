@@ -36,6 +36,7 @@ class DatArchive {
 
   constructor (url) {
     this.url = url
+    this.closed = false;
     this._loadPromise = this._load();
   }
 
@@ -96,8 +97,9 @@ class DatArchive {
       upload: true
     }), stream, (err) => {
       console.error(err)
-
-      this._replicate()
+      if (!this.closed) {
+        this._replicate()
+      }
     })
 
     this._stream = stream
@@ -306,6 +308,11 @@ class DatArchive {
 
   createNetworkActivityStream () {
     return toEventTarget(pda.createNetworkActivityStream(this._archive))
+  }
+
+  close() {
+    this.closed = true;
+    this._stream.destroy();
   }
 
   static async resolveName (name) {
