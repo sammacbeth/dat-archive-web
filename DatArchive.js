@@ -35,13 +35,16 @@ class DatArchive {
   }
 
   constructor (url) {
+    this.url = url
+    this._loadPromise = this._load();
+  }
+
+  _load() {
     let version = null
     let key = null
     let secretKey = null
 
-    this.url = url
-
-    this._loadPromise = getURLData(url).then(async (urlData) => {
+    return getURLData(this.url).then(async (urlData) => {
       const options = {
         sparse: true
       }
