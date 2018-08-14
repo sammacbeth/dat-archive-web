@@ -71,9 +71,7 @@ class DatArchive {
       this._checkout = version ? archive.checkout(version) : archive
       this.url = this.url || `dat://${archive.key.toString('hex')}`
 
-      const stream = this._replicate()
-
-      await waitOpen(stream)
+      this._replicate()
 
       if (!archive.writable && !archive.metadata.length) {
         // wait to receive a first update
