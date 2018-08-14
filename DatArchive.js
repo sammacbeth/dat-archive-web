@@ -59,7 +59,7 @@ class DatArchive {
         options.secretKey = secretKey
       }
 
-      const storage = DatArchive._manager.getStorage(key.toString('hex'), secretKey && secretKey.toString('hex'))
+      const storage = await DatArchive._manager.getStorage(key.toString('hex'), secretKey && secretKey.toString('hex'))
 
       const archive = hyperdrive(storage, key, options)
 
