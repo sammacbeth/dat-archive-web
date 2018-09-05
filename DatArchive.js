@@ -310,7 +310,7 @@ class DatArchive {
 
   close() {
     this.closed = true;
-    this._stream.destroy();
+    this._archive.close();
   }
 
   static async resolveName (name) {
@@ -318,7 +318,7 @@ class DatArchive {
   }
 
   static async fork (url, opts) {
-    const srcDat = new DatArchive(url)
+    const srcDat = DatArchive._manager.construct(url)
 
     const destDat = await DatArchive.create(opts)
 
@@ -335,7 +335,7 @@ class DatArchive {
   static async selectArchive (options) {
     const url = await DatArchive._manager.selectArchive(options)
 
-    const archive = new DatArchive(url)
+    const archive = DatArchive._manager.construct(url)
 
     await archive._loadPromise
 
@@ -343,7 +343,7 @@ class DatArchive {
   }
 
   static async create ({ title, description, type, author } = {}) {
-    const archive = new DatArchive(null)
+    const archive = DatArchive._manager.construct(null)
 
     await archive._loadPromise
 
