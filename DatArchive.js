@@ -319,14 +319,14 @@ class DatArchive {
 
   static async fork (url, opts) {
     const srcDat = DatArchive._manager.construct(url)
-
     const destDat = await DatArchive.create(opts)
 
     await srcDat._loadPromise
 
     await pda.exportArchiveToArchive({
       srcArchive: srcDat._archive,
-      dstArchive: destDat._archive
+      dstArchive: destDat._archive,
+      skipUndownloadedFiles: opts.skipUndownloadedFiles,
     })
 
     return destDat
